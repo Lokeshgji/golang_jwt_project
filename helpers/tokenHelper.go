@@ -3,14 +3,13 @@ package helpers
 import (
 	"context"
 	"fmt"
-	"golang_jwt_project/database"
 	"log"
 	"os"
 	"time"
 
-	"github.com/Lokeshgji/golang_jwt_project/database"
+	"github.com/lokeshgji/golang_jwt_project/database"
+
 	jwt "github.com/dgrijalva/jwt-go"
-	"github.com/golang-jwt/jwt/v4"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -68,20 +67,20 @@ func ValidateToken(signedToken string) (claims *SignedDetails, msg string) {
 	)
 
 	if err != nil {
-		msg := err.Error()
+		msg = err.Error()
 		return
 	}
 
-	claims, ok := token.Claims(*SignedDetails)
+	claims, ok := token.Claims.(*SignedDetails)
 
 	if !ok {
-		msg := fmt.Sprintf("the token is invalid")
+		msg = fmt.Sprintf("the token is invalid")
 		msg = err.Error()
 		return
 	}
 
 	if claims.ExpiresAt < time.Now().Local().Unix() {
-		msg := fmt.Sprintf("token is expired")
+		msg = fmt.Sprintf("token is expired")
 		msg = err.Error()
 		return
 	}
